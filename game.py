@@ -42,16 +42,18 @@ def is_draw(board):
 
 def minimax(board, is_maximizing):
     win = check_winner(board)
-    if win == 0 :
+    if is_draw(board) :
         return 0 
-    elif win == 1 or win == 2 :
-        return 1
+    elif win == 1 :
+        return -10
+    elif win == 2 :
+        return 10
     if is_maximizing :
         value = -np.inf
         for i in range(3):
             for j in range(3):
                 if board[i][j] == 0:
-                    board[i][j] = 1
+                    board[i][j] = 2
                     value = max(value, minimax(board,False))
                     board[i][j] = 0
     else :
@@ -59,7 +61,7 @@ def minimax(board, is_maximizing):
         for i in range(3):
             for j in range(3):
                 if board[i][j] == 0:
-                    board[i][j] = 2
+                    board[i][j] = 1
                     value = min(value, minimax(board,True))
                     board[i][j] = 0
     return value
@@ -73,6 +75,7 @@ def best_move(board) :
                 board[i][j] = 2
                 score = minimax(board,  False)
                 board[i][j] = 0
+                print(score)
                 if score > best_score:
                     best_score = score
                     move = (i, j)
